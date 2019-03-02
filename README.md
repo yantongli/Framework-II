@@ -1,5 +1,3 @@
-# Framework-II
-Wine dataset
 rm(list=ls())
 
 setwd("C:/Users/remed/Google Drive/Columbia/Spring 2019/5205-004 Frameworks and Methods II/Project")
@@ -29,7 +27,7 @@ data <- data_raw[!is.na(data_raw$price),]   ### Remove all records with missing 
 data <- data[!data$country==" ",]           ### Remove all records with missing country values
 data <- data[,2:ncol(data)]                 ### Remove counter column
 data <- data[!data$variety=="",]            ### Remove 1 record that has no variety information
-                                            ####double check to make sure no twitter, no taste_name
+                                            ####double check to make sure no twitter, no taster_name
 
 table(data$taster_name)
 data$taster_name <- as.factor(ifelse(data$taster_name=="","Other",data$taster_name))
@@ -53,8 +51,7 @@ sum(is.na(data$year))
 ### as demonstrated by the in reduction in quality
 ### This suggests that "points" is more of a subjective value judgement based on both quality and price
 
-data_pricebelow100 = data[data$price<150,] #still 96.7% of dataset (if want 99.6% <250)
-dim(data_pricebelow100)
+data_pricebelow200 = data[data$price<200,] #still 96.7% of dataset (if want 99.6% <250)
 summary(data$points)
 
 library(ggplot2)
@@ -71,7 +68,7 @@ ggplot(data_pricebelow1000, aes(price))+
 ggplot(data_pricebelow1000, aes(points))+
   geom_histogram(aes(y = stat(count)))
 
-ggplot(data_pricebelow100, aes(price))+
+ggplot(data_pricebelow200, aes(price))+
   geom_histogram(aes(y = stat(count)))
 
 ggplot(data1, aes(price, points))+
@@ -83,7 +80,6 @@ library(dplyr)
 duplicated = data[duplicated(data),]
 head(duplicated)
 dim(duplicated)
-data1=data_pricebelow100[!duplicated(data), ] #92.24% of original dataset 
+data1=data_pricebelow200[!duplicated(data), ] #92% of original dataset 
 
-wines_for_me <- data.frame(data[data$points>95 & data$price<50,])
-write.csv(wines_for_me, file = "bestofwineenthusiast.csv")
+write.csv(data1, file = "wine_clean.csv")
